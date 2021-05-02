@@ -13,7 +13,7 @@ body {
 }
 
 #page-wraper {
-    background: url(../images/page-bg.PNG) no-repeat center center fixed;
+    background: url(images/page-bg.PNG) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -542,7 +542,7 @@ section.my-work .section-heading {
 }
 
 .lazyloading {
-    background: #f7f7f7 url(//afarkas.github.io/lazysizes/assets/imgs/loader.gif) no-repeat center;
+    background: #f7f7f7 url(//afarkas.github.io/lazysizes/imgs/loader.gif) no-repeat center;
     min-height: 60px;
 }
 
