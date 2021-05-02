@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- bootstrap 4 -->
+
+    <link rel="icon" type="image/png" href="assets/images/author-image.png" />
+    <title>Paciente</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-style.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <link rel="stylesheet" href="assets/css/lightbox.css" />
+  </head>
+  <body onload="ObtenerDatos()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixe-top">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          type="text"
+          href="UPaciente.html"
+          id="titulo"
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="UPaciente.html"
+                >Solicitar cita</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="EstadoCita.html">Estado de cita</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="CompraMedicamentos.html"
+                >Medicamentos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Pedido.html">Pedido</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="PacienteMod.html">Modificar Datos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Sesion.html">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="page-wraper">
+      <center>
+        <div class="section-heading">
+          <h2>Solicitud de cita</h2>
+          <div class="line-dec"></div>
+          <h5 style="color: white">
+            **Solo puede solicitar una cita, podra solicitar otra luego de que
+            la primera haya sido efectuada**
+          </h5>
+        </div>
+        <div style="width: 40%">
+          <form>
+            <div style="width: 100%">
+              <input type="date" name="Efecha" id="Efecha" min="2021-04-25" max="2050-05-25"/>
+            </div>
+            <label for="floatingInput" style="color: white"
+              >Fecha para la cita
+            </label>
+            <br /><br />
+            <div style="width: 100%">
+              <input type="time" name="hora" step="3600" id="Ehora" />
+            </div>
+            <label for="floatingInput" style="color: white"
+              >Hora para la cita
+            </label>
+            <br /><br />
+            <div class="form-floating mb-3">
+              <textarea id="Emotivo" rows="5" cols="33"></textarea>
+              <br><br>
+              <label for="floatingInput" style="color: white"
+                >Motivo de la cita</label
+              >
+            </div>
+
+            <button
+              onclick="revision()"
+              type="button"
+              class="btn btn-outline-light"
+            >
+              Solicitar cita
+            </button>
+          </form>
+        </div>
+        <br /><br /><br /><br />
+      </center>
+
+      <!--De aca corte el resto-->
+    </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="vendor/papaparse.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/lightbox.js"></script>
+
+    <script>
+      function ObtenerDatos() {
+        var usuario = sessionStorage.buscar;
+        var tabla = document.querySelector("#titulo");
+        var cadena = "";
+        fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${usuario}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            cadena += response.Username;
+            tabla.innerHTML = cadena;
+          });
+      }
+
+      function revision() {
+        var usuario1 = sessionStorage.buscar;
+        var cont = true;
+        fetch("https://backend-ipc-2021.herokuapp.com/Users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            var pivote = true
+            var estado = 12
+            response.forEach((element) => {
+              // En este caso, element es el objeto que esta recorriendo el for, entonces por cada iteracion manipulamos a element
+              //console.log(element)
+              
+              if (parseInt(element.tipo) === 5) {
+                if (element.Username === usuario1) {
+                  var cadena = "";
+                  var icono = "";
+                  console.log(element.estado);
+                  if (parseInt(element.estado) === 0) {
+                    estado = 0
+                    pivote = false
+                    
+                  }
+                  if (parseInt(element.estado) === 1) {
+                    estado = 1
+                    pivote = false
+                  }
+                  if(parseInt(element.estado) === 3 || parseInt(element.estado) === 2 ){
+                    pivote = true
+                    estado = element.estado
+                  }
+                }
+              }
+            });
+            if (pivote) {
+              solicitar();
+            }
+            if(estado == 0){
+              cadena =
+                      "Usted ya solicito una cita, la cual falta por revisar agradecemos su comprension";
+                    Swal.fire({
+                      title: "Estado de cita",
+                      text: cadena,
+                      icon: "warning",
+                      showConfirmButton: true,
+                    });
+            }
+            if(estado == 1){
+              cadena =
+                      "Usted ya solicito una cita, la cual ya fue aceptada agradecemos su comprension";
+                      pivote = false
+                    icono = "info";
+                    Swal.fire({
+                      title: "Estado de cita",
+                      text: cadena,
+                      icon: icono,
+                      showConfirmButton: true,
+                    }); 
+            }
+          });
+      }
+
+      function solicitar() {
+        var nombre = sessionStorage.buscar;
+        var fecha = document.querySelector("#Efecha").value;
+        var motivo = document.querySelector("#Emotivo").value;
+        var hora = document.querySelector("#Ehora").value;
+        var estado = 0;
+        var doctor = "Pendiente"
+        /*
+            Npaciente= request.json['paciente']
+        motivo = request.json['motivo']
+        fecha = request.json['fecha']
+        hora = request.json['hora']
+        estado = request.json['estado']
+        tipo = 5
+            */
+        var objeto = {
+          'Npaciente': nombre,
+          'motivo': motivo,
+          'fecha': fecha,
+          'hora': hora,
+          'estado': estado,
+          'tipo': 5,
+          'doctor':doctor
+        };
+        fetch("https://backend-ipc-2021.herokuapp.com/cargaMasiva", {
+          method: "POST",
+          body: JSON.stringify(objeto),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            //alert(response.Mensaje)
+
+            Swal.fire({
+              title: "Registro de cita",
+              text: response.Mensaje,
+              icon: "success",
+            });
+          });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- bootstrap 4 -->
+
+    <link rel="icon" type="image/png" href="assets/images/author-image.png" />
+    <title>Paciente</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-style.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <link rel="stylesheet" href="assets/css/lightbox.css" />
+  </head>
+  <body onload="ObtenerDatos(),ObtenerListado()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixe-top">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          type="text"
+          href="UPaciente.html"
+          id="titulo"
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="UPaciente.html"
+                >Solicitar cita</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="EstadoCita.html">Estado de cita</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="CompraMedicamentos.html"
+                >Medicamentos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Pedido.html">Pedido</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="PacienteMod.html">Modificar Datos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Sesion.html">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="page-wraper">
+      <center>
+        <div class="section-heading">
+          <h2>Medicamentos disponibles</h2>
+          <div class="line-dec"></div>
+          <h5 style="color: white">
+            **Puede agregar los medicamentos que usted desee para luego verlo en
+            la seccion de "Pedidos"**
+          </h5>
+        </div>
+
+        <!--Probando como anunciar los medicamentos-->
+
+        <div class="row" id="listadoMedicina"></div>
+
+        <!--Body-->
+
+        <br /><br /><br /><br />
+      </center>
+
+      <!--De aca corte el resto-->
+      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="vendor/papaparse.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/lightbox.js"></script>
+
+    <script>
+      function ObtenerDatos() {
+        var usuario = sessionStorage.buscar;
+        var tabla = document.querySelector("#titulo");
+        var cadena = "";
+        fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${usuario}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            cadena += response.Username;
+            tabla.innerHTML = cadena;
+          });
+      }
+
+      function Imprimir() {
+        console.log("Maldito opresor");
+      }
+
+      function ObtenerListado() {
+        var tabla = document.querySelector("#listadoMedicina");
+
+        // Esta cadena nos servira para escribir los datos en la tabla.
+        var cadena = "";
+
+        fetch("https://backend-ipc-2021.herokuapp.com/Medicamentos", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            response.forEach((element) => {
+              // Agregamos a la cadena los datos de la respuesta del JSON para agregarlo a un table.
+
+              if (parseFloat(element.cantidad) > 0) {
+                cadena += `<div class="col-md-6">
+                                <div class="service-item">
+                             <div ></div>
+                            <h4>${element.nombre}</h4>
+                            <p>
+                            ${element.descripcion}
+                            </p>
+                           <h6 class="card-subtitle mb-3 text-muted">Precio en quetzales (Q) : ${element.precio}</h6>
+                            <button value=${element.Id} onclick="Agregar(this)" type="button" class="btn btn-outline-dark"
+                             >
+                            Agregar al pedido</button></div>
+                           </div>`;
+              }
+            });
+
+            // POR ULTIMO: Usamos innerHTML para agregar el HTML a la etiqueta que indicamos anteriormente.
+            tabla.innerHTML = cadena;
+          });
+      }
+
+      function Agregar(boton) {
+        var salir = false;
+        var medicamentos = sessionStorage.buscar + "," + boton.value;
+        console.log("usuario que comra y medicamento :" + medicamentos);
+        //direccion para restar el elemento y agregar la compra.
+        fetch(`https://backend-ipc-2021.herokuapp.com/Consumir/${medicamentos}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            console.log(response.Mensaje);
+            if (parseInt(response.Mensaje) === 0) {
+              Swal.fire({
+                title: "Lo sentimos",
+                text: "Ya no contamos con mas cantidad de este medicamento",
+                icon: "info",
+                timer: 5000,
+                showConfirmButton: true,
+              }).then(() => {
+                recargar();
+              });
+            } else {
+              Swal.fire({
+                title: "Gracias!",
+                text: "Tu medicamento se agrego correctamente a tu pedido",
+                icon: "info",
+              });
+            }
+          });
+      }
+      function recargar() {
+        location.href = "CompraMedicamentos.html";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- bootstrap 4 -->
+
+    <link rel="icon" type="image/png" href="assets/images/admin.png" />
+    <title>Administrador</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-style.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <link rel="stylesheet" href="assets/css/lightbox.css" />
+  </head>
+  <body onload="ObtenerDatos(),ObtenerDoctor()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixe-top">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          type="text"
+          href="administrador.html"
+          id="Username"
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link " href="Administrador.html"
+                >Cargar archivos</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="AdminMedic.html">Medicos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminEnf.html">Enfermeras</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminPacientes.html">Pacientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminMedicamentos.html">Medicamentos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminMod.html">Modificar Datos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="reportes.html">Reportes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Sesion.html">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <div id="page-wraper">
+        <center>
+          <div class="section-heading">
+            <h2>Datos del doctor</h2>
+            <div class="line-dec"></div>
+            <h5 style = "color: white;">**Si desea cambiar el sexo del doctor utilice los botones**</h5>
+          </div>
+            <div style="width: 40%;">
+                <!-- Los form vienen de la pagina de Boostrap.
+                  recordar agregarle un id a los componentes que vamos a utilizar
+                  en este caso los input (Entradas de datos) llevan un id.
+                  Segun el type, es el tipo de dato que recibe el input. -->
+              <form>
+        
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="Enombre" placeholder="Nombre">
+                    <label for="floatingInput" style = "color: white;">Nombre completo</label>
+                </div>
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="Eapellido" placeholder="Apellido">
+                    <label for="floatingPassword" style = "color: white;">Apellido completo</label>
+                  </div>
+                  
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="Esexo" placeholder="Sexo del doctor">
+                    <label for="floatingPassword" style = "color: white;">Genero del doctor</label>
+                  </div>
+
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-outline-danger" id = "bt1" onclick="Mas()">MASCULINO</button>
+                      <button type="button" class="btn btn-outline-danger" id = "bt2" onclick="Fem()">FEMENINO</button>
+                  </div>
+                  <br><br>
+                  <!--nombre,apellido,fecha,sexo,Username,contra,tel,tipo-->
+                  
+                  <br>
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="Euser" placeholder="Nombre_Usuario">
+                    <label for="floatingInput" style = "color: white;">Nombre de usuario</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="Eespecialidad" placeholder="Especialidad">
+                  <label for="floatingInput" style = "color: white;">Especialidad</label>
+              </div>
+
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="Econtra" placeholder="contraseña">
+                    <label for="floatingPassword" style = "color: white;">Contraseña</label>
+                  </div>
+        
+                  <div class="mb-3">
+                    <input type="number" class="form-control" id="Enumero" placeholder="Digite su numero de telefono">
+                    <label for="floatingInput"style = "color: white;" >Numero telefonico</label>
+                  </div>
+        
+                  <div style="width: 100%; ">
+                    <input type="date" name="fecha" id = "Efecha">    
+                  </div>
+                  <label for="floatingInput" style = "color: white;">Fecha de nacimiento </label>
+                  <br><br>
+                  <button  onclick="revision()" type="button" class="btn btn-outline-light">Modificar</button>
+                  <button  onclick="Eliminar()" type="button" class="btn btn-outline-light">Eliminar</button>
+                  <button  onclick="Regresar()" type="button" class="btn btn-outline-light">Regresar</button>
+             </form>
+          </div>
+          <br><br><br><br>
+        </center>
+
+      <!--De aca corte el resto-->
+    </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="vendor/papaparse.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/lightbox.js"></script>
+    <script src="vendor/jsPDF-1.3.2/dist/jspdf.min.js"></script>
+    <script>
+    var pivote = 0
+    var sexo = "M"
+    function Fem(){
+      sexo = "F"
+    }
+    function Mas(){
+      sexo = "M"
+    }
+
+      function ObtenerDatos() {
+        var usuario = sessionStorage.buscar;
+        var tabla = document.querySelector("#Username");
+        var cadena = "";
+        fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${usuario}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            cadena += response.Username;
+            tabla.innerHTML = cadena;
+          });
+      }
+
+      //funcion para ver los datos
+      function ObtenerDoctor(){ 
+            var usuario = sessionStorage.BDoctor 
+            console.log(usuario)     
+            fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${usuario}`, {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',}})
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+                alert("Ocurrio un error, ver la consola")
+            })
+            .then(response =>{
+                console.log(response)
+                document.querySelector('#Enombre').value = response.nombre
+                document.querySelector('#Eapellido').value = response.apellido
+                document.querySelector('#Esexo').value = response.sexo
+                document.querySelector('#Euser').value = response.Username
+                document.querySelector('#Eespecialidad').value = response.especialidad
+                document.querySelector('#Econtra').value = response.contra
+                if(response.seteo){
+                  obtenerFecha(response.fecha)
+                }
+                else{
+                  document.querySelector('#Efecha').value = response.fecha  
+                }
+                document.querySelector('#Enumero').value = response.tel
+                
+            })
+        }
+        
+        function Regresar(){
+            location.href = "AdminMedic.html"
+        }
+      
+        function obtenerFecha(e){
+        
+        var AA= new Date(e)
+        console.log("anio "+AA.getUTCFullYear)
+        
+        console.log("el doble aa " +AA)
+        
+        var d = new Date(AA),
+        month = '' + (d.getMonth() + 1),
+        
+        day = '' + (d.getDate()),
+        
+        year = d.getFullYear();
+
+      if (month.length < 2)
+        month = '0' + month;
+      if(day != 1){
+      day = '' + (d.getDate()+1)
+      }
+      if (day.length < 2) 
+        day = '0' + day;
+      
+        document.querySelector('#Efecha').value =[year, month, day].join('-');
+      }
+
+      function revision(){
+      var NombreU = sessionStorage.BDoctor
+        if(NombreU ==document.querySelector('#Euser').value){
+          Actualizar()
+        }
+        else{
+          var cont = true
+        fetch('https://backend-ipc-2021.herokuapp.com/Users', {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',}})
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+                alert("Ocurrio un error, ver la consola")
+            })
+            .then(response =>{
+               response.forEach(element => {
+                    if(element.Username === document.querySelector('#Euser').value.replace(/ /g, "")){
+                      
+                      cont = false
+                        
+                    }  
+                });
+                if(cont){
+                  Actualizar()
+                  
+                }
+                else{
+                  alert("Error, un usuario ya cuenta con el nombre:  \""  +document.querySelector('#User').value+"\"  "+" intenta"
+                  +" con otro nombre")  
+                }
+            }) 
+        }
+      
+    }
+	  
+	  function Actualizar(){
+            var Nombre1 = sessionStorage.BDoctor
+            var nombre = document.querySelector('#Enombre').value
+            var apellido = document.querySelector('#Eapellido').value
+            var fecha = document.querySelector('#Efecha').value
+            var especialidad = document.querySelector('#Eespecialidad').value
+            var Username = document.querySelector('#Euser').value
+            sessionStorage.setItem("BDoctor", Username.replace(/ /g, ""))
+            var contra = document.querySelector('#Econtra').value
+            var tel = document.querySelector('#Enumero').value
+            var seteo = false
+            if(nombre != "" && apellido != "" && fecha != "" && Username!="" ){
+            if(contra.length>7){
+            var objeto = {
+                
+                'nombre': nombre,
+                'apellido': apellido,
+                'fecha': fecha,
+                'sexo':sexo,
+                'Username' : Username.replace(/ /g, ""),
+                'contra' : contra,
+                'especialidad':especialidad,
+                'tel' : tel,
+                'tipo': 1,
+                'seteo':seteo
+            }
+            console.log(objeto)
+
+            fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${Nombre1}`, {
+            method: 'PUT',
+            body: JSON.stringify(objeto),
+            headers:{
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',}})
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+                alert("Ocurrio un error, ver la consola")
+            })
+            .then(response =>{
+                console.log(response);
+                alert(response.Mensaje)
+                location.href = "PDoctor.html"
+            })
+        
+            
+            }
+            else{
+              alert("La contraseña debe contar con almenos 8 caracteres ") 
+            }
+            }
+            else{
+              alert("Por favor llene todos los campos (el numero telefonico es opcional)")  
+            }
+        }
+
+        function Eliminar(){
+            var nombre = document.querySelector('#Euser').value.replace(/ /g, "")
+            
+            fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${nombre}`, {
+            method: 'DELETE',
+            headers:{
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',}})
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+                alert("Ocurrio un error, ver la consola")
+                Regresar()
+            })
+            .then(response =>{
+                console.log(response);
+                alert(response.Mensaje)
+                Regresar()
+            })
+        }
+    </script>
+  </body>
+</html>

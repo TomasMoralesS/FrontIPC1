@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- bootstrap 4 -->
+
+    <link rel="icon" type="image/png" href="assets/images/author-image.png" />
+    <title>Enfermera</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-style.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <link rel="stylesheet" href="assets/css/lightbox.css" />
+  </head>
+  <body onload="ObtenerDatos(),ObtenerDatosF()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixe-top">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          type="text"
+          href="UEnfermera.html"
+          id="titulo"
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="UEnfermera.html"
+                >Lista_Citas_Pendientes</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="CitasAceptadas.html">Citas aceptadas</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="GenerarFactura.html">Generar_Factura</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="EnfermeraMod.html">Modificar datos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Sesion.html">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="page-wraper" style="width: 100%">
+      <center>
+        <div class="section-heading">
+          <h2>Facturacion</h2>
+          <div class="line-dec"></div>
+          <h5 style="color: white">
+            ** Debe elegir al doctor que atendio al paciente para poder generar
+            la factura.**
+          </h5>
+        </div>
+        <div class="container">
+          <label for="floatingInput" style="color: white"
+            >Fecha de facturacion:
+          </label>
+          <div style="width: 100%">
+            <input type="date" name="fecha" id="Efecha" />
+          </div>
+          <br />
+          <label for="floatingInput" style="color: white">Paciente:</label>
+          <br />
+          <div class="btn-group">
+            <br />
+            <input
+              type="text"
+              class="form-control"
+              id="Epaciente"
+              placeholder="Nombre_Paciente"
+            />
+            <br />
+          </div>
+          <br /><br />
+          <label for="floatingInput" style="color: white;width: 40%;">Doctor:</label>
+          <br />
+          <div class="btn-group">
+            <input
+              type="text"
+              class="form-control"
+              id="Edoc"
+              placeholder="Nombre_Doctor"
+              readonly="readonly"
+            />
+            <button
+              type="button"
+              class="btn btn-info dropdown-toggle"
+              data-toggle="dropdown"
+            >
+              <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu" role="menu" id="Listado"></ul>
+          </div>
+          <br /><br />
+          <label for="floatingInput" style="color: white"
+            >Precio de consulta:
+          </label>
+          <br />
+          <div class="btn-group" style="width: 25%">
+            <input
+              type="number"
+              class="form-control"
+              id="Econsulta"
+              placeholder="Digite el precio de la consulta"
+              onchange="sumar(this.value);" min=0
+            />
+          </div>
+
+          <br /><br />
+          <label for="floatingInput" style="color: white"
+            >Costo operacion:
+          </label>
+          <br />
+          <div class="btn-group" style="width: 25%">
+            <input
+              type="number"
+              class="form-control"
+              id="Eoperacion"
+              placeholder="Digite el precio de la operacion"
+              onchange="sumar(this.value);" min=0
+            />
+          </div>
+
+          <br /><br />
+          <label for="floatingInput" style="color: white"
+            >Costo internado:
+          </label>
+          <br />
+          <div class="btn-group" style="width: 25%">
+            <input
+              type="number"
+              class="form-control"
+              id="Einternado"
+              placeholder="Digite el precio"
+              onchange="sumar(this.value);" min=0
+            />
+          </div>
+
+          <br /><br />
+          <label for="floatingInput" style="color: white">Total: </label>
+          <br />
+          <div class="btn-group" style="width: 25%">
+            <input
+              type="number"
+              class="form-control"
+              id="Etotal"
+              placeholder="0"
+              readonly="readonly"
+            />
+          </div>
+          <br><br>
+          <button  onclick="facturar()" type="button" class="btn btn-success">Generar factura</button>
+
+          <!--Inmputs para la facturacion-->
+        </div>
+
+        <br /><br /><br /><br /><br /><br /><br />
+      </center>
+
+      <!--De aca corte el resto-->
+    </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="vendor/papaparse.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/lightbox.js"></script>
+    <script src="vendor/jsPDF-1.3.2/dist/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.js"></script>
+    
+    <script>
+      var listado;
+      var mandar;
+      var botonD = "";
+      var Bdoctores = "";
+      
+      function ObtenerDatos() {
+        var usuario = sessionStorage.buscar;
+        var tabla = document.querySelector("#titulo");
+        var cadena = "";
+        fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${usuario}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            cadena += response.Username;
+            tabla.innerHTML = cadena;
+          });
+      }
+
+      function ObtenerDatosF() {
+        //vamos a obtener la fecha actual
+        var f = new Date();
+        obtenerFecha(f);
+
+        var cadena = "";
+        botonD = "";
+        Bdoctores = "";
+        var tabla = document.querySelector("#Listado");
+        var contador = 1;
+        fetch("https://backend-ipc-2021.herokuapp.com/Doctores", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            listado = response; //este es el listado de los datos de doctores
+
+            listado.forEach((element) => {
+              // Numero,fecha,hora,motivo,acciones
+              var visual = element.nombre + " " + element.apellido;
+              var datos =
+                element.Username +
+                "," +
+                element.nombre +
+                "," +
+                element.apellido;
+              Bdoctores += `
+              <li><button value="${datos}" onclick="Reescribir(this)" type="button" class="btn btn-info btn-block">${visual}</button></li>
+              
+              `;
+              Bdoctores += `<br/><br/>`;
+            });
+            botonD += Bdoctores + "</ul>";
+            tabla.innerHTML = botonD;
+          });
+      }
+
+      function obtenerFecha(e) {
+        var d = new Date(e),
+          month = "" + (d.getMonth() + 1),
+          day = "" + d.getDate(),
+          year = d.getFullYear();
+        if (month.length < 2) month = "0" + month;
+        if (day.length < 2) day = "0" + day;
+        document.querySelector("#Efecha").value = [year, month, day].join("-");
+      }
+
+      function Reescribir(boton) {
+        var dat = boton.value.split(",");
+        mandar = dat[0]
+        console.log("el user name es " + dat[0]);
+        document.querySelector("#Edoc").value = dat[1] + " " + dat[2];
+      }
+
+      function sumar(valor) {
+        var total = 0;
+        valor = parseInt(valor); // Convertir el valor a un entero (número).
+        total = document.querySelector("#Etotal").value;
+        total = total == null || total == undefined || total == "" ? 0 : total;
+        total = parseInt(total) + parseInt(valor);
+        document.querySelector("#Etotal").value = total;
+      }
+    
+      function facturar(){
+      var nombre =  document.querySelector("#Epaciente").value;
+      var doctor = document.querySelector("#Edoc").value;
+      var consulta = document.querySelector("#Econsulta").value;
+      var operacion = document.querySelector("#Eoperacion").value;
+      var internado = document.querySelector("#Einternado").value;
+      var total = document.querySelector("#Etotal").value;
+      var fecha = document.querySelector("#Efecha").value;
+      if(internado ===""){
+          internado = 0
+        }
+        if(consulta ===""){
+          consulta = 0
+        }
+        if(operacion ===""){
+          operacion = 0
+        }
+        
+      if(consulta!="" && total!=""){
+        if(nombre!=""){
+        if(doctor!=""){
+          if(fecha!=""){
+            //la magia del fetch 
+      var objeto = {
+        'paciente':nombre,
+        'doctor': mandar,
+        'PConsulta':consulta,
+        'POperacion':operacion,
+        'PInternado':internado,
+        'Total':total,
+        'fecha':fecha
+        }
+        fetch("https://backend-ipc-2021.herokuapp.com/Facturacion", {
+          method: "POST",
+          body: JSON.stringify(objeto),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+
+          .then((response) => {
+              if( parseInt(response.Mensaje) == 0){
+                Swal.fire({
+                title: "Facturacion",
+                text: "Se registro la factura con exito!",
+                icon: "success",
+                timer: 5000,
+                showConfirmButton: true,
+              }).then(() => {
+                //paciente,doc,cons,ope,inter,total
+                Imprimir(nombre,doctor,consulta,operacion,internado,total)
+                
+              });
+              }
+              
+            
+          });
+          }
+          else{
+            Swal.fire({
+                title: "Facturacion",
+                text: "Error, coloca una fecha de facturacion",
+                icon: "warning",
+                timer: 5000,
+                showConfirmButton: true,
+              });
+          }
+        }
+        else{
+          Swal.fire({
+                title: "Facturacion",
+                text: "Error, selecciona un doctor",
+                icon: "warning",
+                timer: 5000,
+                showConfirmButton: true,
+              });
+        }
+      }
+      else{
+        Swal.fire({
+                title: "Facturacion",
+                text: "Error, coloca un nombre en el paciente",
+                icon: "warning",
+                timer: 5000,
+                showConfirmButton: true,
+              });
+      }
+      }
+      else{
+        Swal.fire({
+                title: "Facturacion",
+                text: "Error, debes colocar un numero en la casilla de \"Precio de consulta\"",
+                icon: "warning",
+                timer: 5000,
+                showConfirmButton: true,
+              });
+      }
+      }
+
+      function Imprimir(paciente,doc,cons,ope,inter,total){
+          var salto =50
+          var pdf = new jsPDF();
+          pdf.text(20,20,"Descripcion de gastos");
+          var contador = 1;
+          var columns = ["DESCRIPCION","DATO"];
+          var data = [];
+
+           
+          var temp = ["PACIENTE ",paciente];
+          data.push(temp);
+          var temp = ["DOCTOR ",doc];
+          data.push(temp);
+          var temp = ["CONSULTA (Q) ",cons];
+          data.push(temp);
+          var temp = ["OPERACION (Q) ",ope];
+          data.push(temp);
+          var temp = ["INTERNCACION (Q)",inter];
+          data.push(temp);
+          var temp = ["TOTAL (Q) ",total];
+          data.push(temp);
+          
+
+          pdf.autoTable(columns,data,
+          { margin:{ top: 25 }}
+          );
+          
+          pdf.save('Factura.pdf');
+          location.href = "GenerarFactura.html"
+
+        }
+    </script>
+  </body>
+</html>

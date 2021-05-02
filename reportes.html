@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- bootstrap 4 -->
+
+    <link rel="icon" type="image/png" href="assets/images/admin.png" />
+    <title>Administrador</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-style.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <link rel="stylesheet" href="assets/css/lightbox.css" />
+  </head>
+  <body onload="ObtenerDatos()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixe-top">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          type="text"
+          href="administrador.html"
+          id="Username"
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="administrador.html"
+                >Cargar archivos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminMedic.html">Medicos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminEnf.html">Enfermeras</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminPacientes.html">Pacientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminMedicamentos.html">Medicamentos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminMod.html">Modificar Datos</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="reportes.html">Reportes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Sesion.html">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="page-wraper">
+      <center>
+        <div class="container">
+          <br /><br /><br /><br /><br /><br /><br /><br />
+          <button
+            onclick="RPDF(1)"
+            type="button"
+            class="btn btn-success btn-block"
+          >
+            Descargar: Top 5 medicamentos más vendidos
+          </button>
+          <br /><br />
+          <button
+            onclick="RPDF(2)"
+            type="button"
+            class="btn btn-success btn-block"
+          >
+            Descargar: Top 3 doctores con más citas atendidas
+          </button>
+          <br /><br />
+          <button
+            onclick="RPDF(3)"
+            type="button"
+            class="btn btn-success btn-block"
+          >
+            Descargar: Top 3 Enfermedades más comunes
+          </button>
+
+          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        </div>
+      </center>
+
+      <!--De aca corte el resto-->
+    </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="vendor/papaparse.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/lightbox.js"></script>
+    <script src="vendor/jsPDF-1.3.2/dist/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.js"></script>
+
+    <script>
+      var pass = 0;
+      var comp = 0;
+      var colums;
+      var contador;
+      var NameDoc = "";
+      var data;
+
+      function ObtenerDatos() {
+        var usuario = sessionStorage.buscar;
+        var tabla = document.querySelector("#Username");
+        var cadena = "";
+        fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${usuario}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            cadena += response.Username;
+            tabla.innerHTML = cadena;
+          });
+      }
+
+      function RPDF(numero) {
+        var opcion = numero;
+        var respuesta0;
+
+        //realizar el llamado del fetch
+        fetch(`https://backend-ipc-2021.herokuapp.com/Reportes/${opcion}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            if(response.Lista != '0'){
+            respuesta0 = response.Lista;
+            Imprimir(opcion, respuesta0);
+            }
+            else{
+              Swal.fire({
+                   title: "Error",
+                   text: "No se cuenta con la cantidad de datos necesarios",
+                   icon: "warning",
+                   showConfirmButton: true,
+                  }) 
+            }
+          });
+      }
+
+      function Imprimir(NumeroOp, respuesta) {
+        var opcion = NumeroOp;
+
+        if (opcion == 1) {
+          var pdf = new jsPDF();
+          NameDoc = "Top 5 medicamentos más vendidos";
+          pdf.text(20, 20, "Top 5 medicamentos más vendidos");
+          contador = 1;
+          columns = ["No.", "Nombre", "Precio", "Disponible", "Vendido"];
+          data = [];
+
+          respuesta.forEach((element) => {
+            //nombre, precio, disponible ,vendido
+            var temp = [
+              contador,
+              element.nombre,
+              element.precio,
+              element.cantidad,
+              element.vendido,
+            ];
+            data.push(temp);
+            contador++;
+          });
+
+          pdf.autoTable(columns, data, {
+            startY: false,
+            theme: "grid",
+            //tableWidth: 'auto',
+            columnWidth: "wrap",
+            showHeader: "everyPage",
+            columnStyles: {
+              0: { columnWidth: 20 },
+              1: { columnWidth: 30 },
+              2: { columnWidth: 20 },
+              3: { columnWidth: 30 },
+              4: { columnWidth: 30 },
+              
+            },
+            headerStyles: { theme: "grid" },
+            styles: {
+              overflow: "linebreak",
+              columnWidth: "100",
+              font: "arial",
+              fontSize: 10,
+              cellPadding: 4,
+              overflowColumns: "linebreak",
+            },
+          });
+          pdf.save(NameDoc + ".pdf");
+          data = []
+          columns=[]
+        }
+        if (opcion == 2) {
+          var pdf = new jsPDF();
+          NameDoc = "Top 3 doctores con más citas atendidas";
+          //#nombre,apellido,especialidad,usuario,citas
+          pdf.text(20, 20, "Top 3 doctores con más citas atendidas");
+          contador = 1;
+          columns = [
+            "No.",
+            "Nombre",
+            "Apellido",
+            "Especialidad",
+            "Usuario",
+            "Atendidas",
+          ];
+          data = [];
+
+          respuesta.forEach((element) => {
+            var temp = [
+              contador,
+              element.nombre,
+              element.apellido,
+              element.especialidad,
+              element.usuario,
+              element.citas,
+            ];
+            data.push(temp);
+            contador++;
+          });
+
+          pdf.autoTable(columns, data, {
+            startY: false,
+            theme: "grid",
+            //tableWidth: 'auto',
+            columnWidth: "wrap",
+            showHeader: "everyPage",
+            columnStyles: {
+              0: { columnWidth: 15 },
+              1: { columnWidth: 30 },
+              2: { columnWidth: 30 },
+              3: { columnWidth: 40 },
+              4: { columnWidth: 30 },
+              5: { columnWidth: 30 },
+            },
+            headerStyles: { theme: "grid" },
+            styles: {
+              overflow: "linebreak",
+              columnWidth: "100",
+              font: "arial",
+              fontSize: 10,
+              cellPadding: 4,
+              overflowColumns: "linebreak",
+            },
+          });
+          pdf.save(NameDoc + ".pdf");
+          data = []
+          columns=[]
+        }
+        if (opcion == 3) {
+          var pdf = new jsPDF();
+          NameDoc = "Top 3 Enfermedades más comunes";
+          //enfermedad,contador
+          pdf.text(20, 20, "Top 3 Enfermedades más comunes");
+          contador = 1;
+          columns = ["No.", "Enfermedad", "Contador"];
+          data = [];
+
+          respuesta.forEach((element) => {
+            var temp = [contador, element.enfermedad, element.contador];
+            data.push(temp);
+            contador++;
+          });
+
+          pdf.autoTable(columns, data, {
+            startY: false,
+            theme: "grid",
+            //tableWidth: 'auto',
+            columnWidth: "wrap",
+            showHeader: "everyPage",
+            columnStyles: {
+              0: { columnWidth: 20 },
+              1: { columnWidth: 50 },
+              2: { columnWidth: 40 },
+            },
+            headerStyles: { theme: "grid" },
+            styles: {
+              overflow: "linebreak",
+              columnWidth: "100",
+              font: "arial",
+              fontSize: 10,
+              cellPadding: 4,
+              overflowColumns: "linebreak",
+            },
+          });
+          pdf.save(NameDoc + ".pdf");
+          data = []
+          columns=[]
+        }
+      }
+    
+    </script>
+  </body>
+</html>

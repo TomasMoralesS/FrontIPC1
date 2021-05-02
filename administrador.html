@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- bootstrap 4 -->
+
+    <link rel="icon" type="image/png" href="assets/images/admin.png" />
+    <title>Administrador</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-style.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <link rel="stylesheet" href="assets/css/lightbox.css" />
+  </head>
+  <body onload="ObtenerDatos(), mostrarMsg()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixe-top">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          type="text"
+          href="administrador.html"
+          id="Username"
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#"
+                >Cargar archivos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminMedic.html">Medicos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminEnf.html">Enfermeras</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminPacientes.html">Pacientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminMedicamentos.html">Medicamentos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="AdminMod.html">Modificar Datos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="reportes.html">Reportes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Sesion.html">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <div id="page-wraper">
+      <center>
+        <aritcle class="container">
+          <div>
+            <br /><br />
+
+            <div class="section-heading">
+              <h2>Carga de pacientes</h2>
+              <div class="line-dec"></div>
+            </div>
+            <div class="container">
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  lang="es"
+                  id="filesPaciente"
+                />
+                <label class="custom-file-label" for="customFileLang"
+                  >Seleccionar Archivo</label
+                >
+              </div>
+              <br />
+              <br />
+              <button
+                style="width: 40%"
+                class="btn btn-primary btn-block"
+                onclick="lectura()"
+              >
+                Subir
+              </button>
+              <br />
+              <br />
+            </div>
+          </div>
+        </aritcle>
+
+        <aritcle class="container">
+          <div>
+            <br /><br />
+
+            <div class="section-heading">
+              <h2>Carga de doctores</h2>
+              <div class="line-dec"></div>
+            </div>
+            <div class="container">
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  lang="es"
+                  id="filesDoctor"
+                />
+                <label class="custom-file-label" for="customFileLang"
+                  >Seleccionar Archivo</label
+                >
+              </div>
+              <br />
+              <br />
+              <button
+                style="width: 40%"
+                class="btn btn-primary btn-block"
+                onclick="lecturaDoctores()"
+              >
+                Subir
+              </button>
+              <br />
+              <br />
+            </div>
+          </div>
+        </aritcle>
+
+        <aritcle class="container">
+          <div>
+            <br /><br />
+
+            <div class="section-heading">
+              <h2>Carga de enfermeras</h2>
+              <div class="line-dec"></div>
+            </div>
+            <div class="container">
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  lang="es"
+                  id="filesEnfermeras"
+                />
+                <label class="custom-file-label" for="customFileLang"
+                  >Seleccionar Archivo</label
+                >
+              </div>
+              <br />
+              <br />
+              <button
+                style="width: 40%"
+                class="btn btn-primary btn-block"
+                onclick="lecturaEnfermeras()"
+              >
+                Subir
+              </button>
+              <br />
+              <br />
+            </div>
+          </div>
+        </aritcle>
+
+        <aritcle class="container">
+          <div>
+            <br /><br />
+
+            <div class="section-heading">
+              <h2>Carga de medicamentos</h2>
+              <div class="line-dec"></div>
+            </div>
+            <div class="container">
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  lang="es"
+                  id="filesMedicamentos"
+                />
+                <label class="custom-file-label" for="customFileLang"
+                  >Seleccionar Archivo</label
+                >
+              </div>
+              <br />
+              <br />
+              <button
+                style="width: 40%"
+                class="btn btn-primary btn-block"
+                onclick="lecturaMedicamentos()"
+              >
+                Subir
+              </button>
+              <br />
+              <br />
+            </div>
+          </div>
+        </aritcle>
+
+      </center>
+
+      <!--De aca corte el resto-->
+    </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="vendor/papaparse.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/lightbox.js"></script>
+
+    <script>
+      var pass = 0;
+      var comp = 0;
+
+      function ObtenerDatos() {
+        var usuario = sessionStorage.buscar;
+        var tabla = document.querySelector("#Username");
+        var cadena = "";
+        fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${usuario}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            cadena += response.Username;
+            tabla.innerHTML = cadena;
+          });
+      }
+
+      //funcion para el CSV
+
+      function lectura() {
+        let input_archivo = document.getElementById("filesPaciente");
+        let archivo = input_archivo.files[0];
+
+        if (!archivo) {
+          Swal.fire({
+            title: "Carga Pacientes",
+            text: "Sube un archivo primero",
+            icon: "warning",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        }
+
+        if (archivo) {
+          const reader = new FileReader();
+          reader.addEventListener("load", (event) => {
+            let texto = event.target.result;
+            texto = texto.split("\n");
+            Salto = 0;
+            comp = texto.length - 1;
+            texto.forEach((linea) => {
+              if (Salto > 0) {
+                let usuario = linea.split(",");
+
+                revision(usuario, 3);
+              }
+              Salto++;
+            });
+          });
+
+          reader.readAsText(archivo, "UTF-8");
+        }
+      }
+
+      function lecturaDoctores() {
+        let input_archivo = document.getElementById("filesDoctor");
+        let archivo = input_archivo.files[0];
+
+        if (!archivo) {
+          Swal.fire({
+            title: "Carga Doctores",
+            text: "Sube un archivo primero",
+            icon: "warning",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        }
+
+        if (archivo) {
+          const reader = new FileReader();
+          reader.addEventListener("load", (event) => {
+            let texto = event.target.result;
+            texto = texto.split("\n");
+            Salto = 0;
+            comp = texto.length - 1;
+            texto.forEach((linea) => {
+              if (Salto > 0) {
+                let usuario = linea.split(",");
+
+                revision(usuario, 1);
+              }
+              Salto++;
+            });
+          });
+
+          reader.readAsText(archivo, "UTF-8");
+        }
+      }
+
+      function lecturaEnfermeras() {
+        let input_archivo = document.getElementById("filesEnfermeras");
+        let archivo = input_archivo.files[0];
+
+        if (!archivo) {
+          Swal.fire({
+            title: "Carga Enfermeras",
+            text: "Sube un archivo primero",
+            icon: "warning",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        }
+
+        if (archivo) {
+          const reader = new FileReader();
+          reader.addEventListener("load", (event) => {
+            let texto = event.target.result;
+            texto = texto.split("\n");
+            Salto = 0;
+            comp = texto.length - 1;
+            texto.forEach((linea) => {
+              if (Salto > 0) {
+                let usuario = linea.split(",");
+
+                revision(usuario, 2);
+              }
+              Salto++;
+            });
+          });
+
+          reader.readAsText(archivo, "UTF-8");
+        }
+      }
+
+      function lecturaMedicamentos() {
+        let input_archivo = document.getElementById("filesMedicamentos");
+        let archivo = input_archivo.files[0];
+
+        if (!archivo) {
+          Swal.fire({
+            title: "Carga Medicamentos",
+            text: "Sube un archivo primero",
+            icon: "warning",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        }
+
+        if (archivo) {
+          const reader = new FileReader();
+          reader.addEventListener("load", (event) => {
+            let texto = event.target.result;
+            texto = texto.split("\n");
+            Salto = 0;
+            comp = texto.length - 1;
+            texto.forEach((linea) => {
+              if (Salto > 0) {
+                let usuario = linea.split(",");
+
+                revision(usuario, 4);
+              }
+              Salto++;
+            });
+          });
+
+          reader.readAsText(archivo, "UTF-8");
+        }
+      }
+
+      //mostrar mensaje para el tipo de archivo
+      function mostrarMsg() {
+        Swal.fire({
+          title: "Aviso",
+          text: "Para la carga se necesitan archivos de tipo CSV",
+          icon: "info",
+        });
+      }
+
+      //Revision de los nombres
+      function revision(Usuario1, Tipo) {
+        var continuar = true;
+
+        fetch("https://backend-ipc-2021.herokuapp.com/Users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            response.forEach((element) => {
+              if(Tipo == 4){
+                if (element.Username === Usuario1[0]) {
+               continuar = false;
+               pass++;
+               if (pass == comp) {
+                 Swal.fire({
+                   title: "Carga masiva",
+                   text: "Se hizo la carga masiva",
+                   icon: "success",
+                   timer: 5000,
+                   showConfirmButton: false,
+                 });
+               }
+             }
+              }
+              else{
+                if (element.Username === Usuario1[4]) {
+               
+               continuar = false;
+               pass++;
+               if (pass == comp) {
+                 Swal.fire({
+                   title: "Carga masiva",
+                   text: "Se hizo la carga masiva",
+                   icon: "success",
+                   timer: 5000,
+                   showConfirmButton: false,
+                 });
+               }
+             }
+              }
+            });
+            if (continuar) {
+              carga(Usuario1, Tipo);
+              pass++;
+            }
+          });
+      }
+
+      function carga(usuarioA, Tipo) {
+        
+        if (Tipo == 3) {
+          console.log("este capo es un paciente")
+          let nombre = usuarioA[0];
+          let apellido = usuarioA[1];
+          let texto = usuarioA[2].split("/");
+          let dia = (parseInt(texto[0]))
+          if(dia != 0){
+          dia = dia-1
+          }
+          let escrito = texto[2]+","+texto[1]+","+dia;
+          //ellos me dan dia , mes , anio
+          let fecha = escrito
+          let Sexo = usuarioA[3];
+          let Username = usuarioA[4];
+          let contra = usuarioA[5];
+          let tel = parseInt(usuarioA[6]);
+          let tipo = Tipo;
+          var objeto = {
+            'nombre': nombre,
+            'apellido': apellido,
+            'fecha': fecha,
+            'sexo': Sexo,
+            'Username': Username.replace(/ /g, ""),
+            'contra': contra,
+            'tel': tel,
+            'tipo': Tipo,
+          };
+        } else if (Tipo == 1) {
+          console.log("este capo es doctor")
+          let nombre = usuarioA[0];
+          let apellido = usuarioA[1];
+          let texto = usuarioA[2].split("/");
+          let dia = (parseInt(texto[0]))
+          if(dia != 0){
+          dia = dia-1
+          }
+          let escrito = texto[2]+","+texto[1]+","+dia;
+          //ellos me dan dia , mes , anio
+          let fecha = escrito
+          let Sexo = usuarioA[3];
+          let Username = usuarioA[4];
+          let contra = usuarioA[5];
+          let Especialidad = usuarioA[6];
+          let tel = parseInt(usuarioA[6]);
+          let tipo = Tipo;
+          var objeto = {
+            'nombre': nombre,
+            'apellido': apellido,
+            'fecha': fecha,
+            'sexo': Sexo,
+            'Username': Username.replace(/ /g, ""),
+            'contra': contra,
+            'especialidad': Especialidad,
+            'tel': tel,
+            'tipo': tipo,
+            'seteo':true
+          };
+        }
+        else if (Tipo == 2) {
+          console.log("este capo es una enfermera")
+          //nombre,apellido,fecha,sexo,Username,contra,tel,tipo
+          //nombre,apellido,fecha,sexo,nombre,contrasenia,telefono
+          let nombre = usuarioA[0];
+          let apellido = usuarioA[1];
+          let texto = usuarioA[2].split("/");
+          let dia = (parseInt(texto[0]))
+          if(dia != 0 && dia !=1){
+          dia = dia-1
+          }
+          let escrito = texto[2]+","+texto[1]+","+dia;
+          //ellos me dan dia , mes , anio
+          let fecha = escrito
+          let Sexo = usuarioA[3];
+          let Username = usuarioA[4];
+          let contra = usuarioA[5];
+          let tel = parseInt(usuarioA[6]);
+          let tipo = parseInt(Tipo);
+          console.log(tipo)
+          var objeto = {
+            'nombre': nombre,
+            'apellido': apellido,
+            'fecha': fecha,
+            'sexo': Sexo,
+            'Username': Username.replace(/ /g, ""),
+            'contra': contra,
+            'tel': tel,
+            'tipo': tipo,
+            'seteo':true
+          };
+        }
+        else if (Tipo == 4) {
+          console.log("este capo es un medicamento")
+          //nombre,precio,descripcion,cantidad
+          //nombre,precio,descripcion,cantidad
+          let nombre = usuarioA[0];
+          let precio = parseFloat(usuarioA[1]);
+          let descripcion = usuarioA[2];
+          let cantidad = parseInt(usuarioA[3]);
+          let tipo = Tipo
+          var objeto = {
+            'nombre': nombre,
+            'precio':precio,
+            'descripcion': descripcion,
+            'cantidad':cantidad,
+            'tipo': tipo,
+            'seteo':true
+          };
+        }
+
+        fetch("https://backend-ipc-2021.herokuapp.com/cargaMasiva", {
+          method: "POST",
+          body: JSON.stringify(objeto),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+
+          .then((response) => {
+            if (pass == comp) {
+              Swal.fire({
+                title: "Carga masiva",
+                text: "Se hizo la carga masiva",
+                icon: "success",
+                timer: 5000,
+                showConfirmButton: false,
+              });
+              pass = 0;
+              comp = 0;
+            }
+          });
+      }
+    </script>
+  </body>
+</html>

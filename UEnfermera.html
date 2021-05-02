@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- bootstrap 4 -->
+
+    <link rel="icon" type="image/png" href="assets/images/author-image.png" />
+    <title>Enfermera</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-style.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <link rel="stylesheet" href="assets/css/lightbox.css" />
+  </head>
+  <body onload="ObtenerDatos(),ObtenerCitas()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixe-top">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          type="text"
+          href="UEnfermera.html"
+          id="titulo"
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="UEnfermera.html"
+                >Lista_Citas_Pendientes</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="CitasAceptadas.html">Citas aceptadas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="GenerarFactura.html"
+                >Generar_Factura</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="EnfermeraMod.html">Modificar datos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Sesion.html">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="page-wraper" style="width: 100%;">
+      <center>
+        <div class="section-heading">
+          <h2>Listado de citas pendientes</h2>
+          <div class="line-dec"></div>
+          <h5 style="color: white">
+            ** Debe elegir un doctor para una cita para que esta pueda ser aceptada.**
+          </h5>
+          <h5 style="color: white">
+            **     (El formato de fecha es: Año,Mes,Dia)    **
+          </h5>
+          
+        </div>
+        <div class="container">
+
+          
+
+          <!--TABLA-->
+          <div >
+            <table class="table table-dark table-hover">
+              <thead class="table-light">
+                    <tr>
+                        <th style ="color: black;"> No. </th>
+                        <th style ="color: black;"> Fecha   .</th>
+                        <th style ="color: black;"> Hora </th>
+                        <th style ="color: black;">Motivo</th>
+                        <th style = "color: black;">Doctor</th>
+                        <th style ="color: black;"> Acciones </th>
+                    </tr>
+                </thead>
+                <tbody id="detalles"></tbody>
+                  </table>
+                  <br><br>
+                 
+        </div>
+        </div>
+        
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <br /><br /><br /><br />
+      </center>
+
+      <!--De aca corte el resto-->
+    </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="vendor/papaparse.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/lightbox.js"></script>
+
+    <script>
+      var listado
+      var doctor = "nulo"
+      var botonD=''
+      var Bdoctores = ''
+
+      function ObtenerDatos() {
+        var usuario = sessionStorage.buscar;
+        var tabla = document.querySelector("#titulo");
+        var cadena = "";
+        fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${usuario}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Ocurrio un error, ver la consola");
+          })
+          .then((response) => {
+            cadena += response.Username;
+            tabla.innerHTML = cadena;
+          });
+      }
+
+      
+
+      function ObtenerCitas(){
+          var tabla = document.querySelector('#detalles')
+          var contador = 1
+          // Esta cadena nos servira para escribir los datos en la tabla.
+          var cadena = ''
+           botonD=''
+           Bdoctores = ''
+          fetch('https://backend-ipc-2021.herokuapp.com/Citas', {
+          method: 'GET',
+          headers:{
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',}})
+          .then(res => res.json())
+          .catch(err => {
+              console.error('Error:', err)
+              alert("Ocurrio un error, ver la consola")
+          })
+          .then(response =>{
+            listado = response.Docs//este es el listado de los datos de doctores
+            botonD +=`<button type="button" class="btn btn-outline-danger dropdown-toggle "
+                    data-toggle="dropdown">
+              Doctor<span class="caret"></span>
+            </button>
+          
+            <ul class="dropdown-menu" role="menu">`
+            var salto = 0
+            listado.forEach(element => {
+                  // Numero,fecha,hora,motivo,acciones
+                  Bdoctores += `
+              <li><button value="${element.user}" onclick="verificacion(this)" type="button" class="btn btn-info  btn-block">${element.nombre}</button></li>
+              
+              `
+              salto+=1
+              if(salto%2==0){
+                Bdoctores += `<br/><br/>` 
+              }
+            //</ul>`  
+                      
+          });
+              botonD+=Bdoctores + "</ul>"
+              response.Citas.forEach(element => {
+                  if(parseInt(element.estado) == 0){
+                    cadena += `<tr>
+                    <td> ${contador} </td>
+                      <td> ${element.fecha} </td>
+                      <td> ${element.hora} </td>
+                      <td> ${element.motivo} </td>
+                      <td> ${botonD} </td>
+                      <td> <button value=${element.paciente} onclick="Aceptar(this)"  type="button" class="btn btn-success btn-lg btn-block">Aceptar</button> 
+                        <button value=${element.paciente} onclick="Rechazar(this)"  type="button" class="btn btn-outline-danger btn-lg btn-block">Rechazar</button></td>
+                      </tr>`  
+                      contador++   
+                  }    
+              });
+              tabla.innerHTML = cadena
+          })
+      }
+
+      function verificacion(boton){
+      var mensaje = boton.value
+      doctor = mensaje
+      console.log("Escogio al doctor con nombre de usuario: "+doctor)
+      }
+
+      function Aceptar(boton){
+        if(doctor === "nulo"){
+          Swal.fire({
+            title: "Error",
+            text: "Seleccione un doctor para esta cita",
+            icon: "warning",
+            timer: 4000,
+            showConfirmButton: true,
+          });
+        }
+        else{
+        paciente = boton.value
+        console.log("Aceptar la cita con el paciente: "+paciente+" con el doctor: "+doctor)
+        var data = paciente +","+"0"+","+doctor
+        //
+          /*
+            #necesito el nombre del paciente si su estado es aceptado entonces tambien el nombre del doctor y el estado 
+    arr = data.split(',')
+    paciente = arr[0]
+    estado = arr[1]
+    doc = arr[2]
+          */
+          fetch(`https://backend-ipc-2021.herokuapp.com/ConsumirCitas/${data}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            
+          })
+          .then((response) => {
+            if(parseInt(response.Mensaje) == 0){
+              Swal.fire({
+                   title: "Exito!",
+                   text: "Cita agendada con exito!",
+                   icon: "success",
+                   showConfirmButton: true,
+                  }).then(() => {
+                ObtenerCitas();
+              });
+            }
+          });
+        doctor="nulo"
+        }
+      }
+
+
+      function Rechazar(boton){
+        
+        paciente = boton.value
+        console.log("Rechazar la cita con el paciente: "+paciente+" con el doctor: "+doctor)
+        var data = paciente +","+"2"+","+doctor
+        
+          fetch(`https://backend-ipc-2021.herokuapp.com/ConsumirCitas/${data}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.error("Error:", err);
+            
+          })
+          .then((response) => {
+            if(parseInt(response.Mensaje) == 1){
+              Swal.fire({
+                   title: "Exito!",
+                   text: "Se rechazó esta cita!",
+                   icon: "success",
+                   showConfirmButton: true,
+                  }).then(() => {
+                ObtenerCitas();
+              });
+            }
+            else{
+              console.error("Error:", err);
+            }
+          });
+        doctor="nulo"
+        
+      }
+
+   
+
+    </script>
+  </body>
+</html>
