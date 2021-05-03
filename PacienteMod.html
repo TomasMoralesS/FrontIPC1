@@ -191,7 +191,7 @@
 
       function ObtenerDatos() {
         var usuario1 = sessionStorage.buscar
-        console.log(usuario1)
+        console.log("El usuario es "+usuario1)
         var tabla = document.querySelector('#titulo') 
         var cadena =""
         fetch(`https://backend-ipc-2021.herokuapp.com/Personas/${usuario1}`, {
